@@ -38,9 +38,9 @@ UrlStart2 = r'[a-z0-9\.-]+?' + r'\.' + CommonTLDs + pos_lookahead(r'[/ \W\b]')
 UrlBody = r'[^ \t\r\n<>]*?'  # * not + for case of:  "go to bla.com." -- don't want period
 UrlExtraCrapBeforeEnd = '%s+?' % regex_or(PunctChars, Entity)
 UrlEnd = regex_or( r'\.\.+', r'[<>]', r'\s', '$')
-Url = (r'\b' + 
-    regex_or(UrlStart1, UrlStart2) + 
-    UrlBody + 
+Url = (r'\b' +
+    regex_or(UrlStart1, UrlStart2) +
+    UrlBody +
     pos_lookahead( optional(UrlExtraCrapBeforeEnd) + UrlEnd))
 
 Url_RE = re.compile("(%s)" % Url, re.U|re.I)
@@ -203,7 +203,7 @@ def unprotected_tokenize(s):
 
 if __name__=='__main__':
   for line in sys.stdin:
-    print u" ".join(tokenize(line[:-1])).encode('utf-8')
+    print(u" ".join(tokenize(line[:-1])).encode('utf-8'))
     #print "CUR\t" + " ".join(tokenize(line[:-1]))
     #print "WS\t" + " ".join(line[:-1].split())
     #print ansi.color(line.strip(),'red')
