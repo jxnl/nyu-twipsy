@@ -67,7 +67,7 @@ class DataAccess:
 
     @classmethod
     def as_dataframe(cls):
-        if not cls.X:
+        if cls.X is None:
             cls.X = cls.to_df(db.find(Queries.X, Projections.all))
         return cls.X
 
