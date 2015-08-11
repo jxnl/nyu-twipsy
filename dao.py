@@ -1,8 +1,8 @@
 __author__ = 'JasonLiu'
 
-from config import db
-
 import pandas as pd
+
+from config import db
 
 
 def union(*dtts):
@@ -26,12 +26,17 @@ class Projections:
     This services as the initial feature set used to project data
     from MongoDB, the code there should also serve as a reference
     """
-    text    = project("text")
+    text = project("text")
     predict = project("predict")
-    labels  = project("labels")
-    time    = project("created_at")
-    user    = project("friends_count", "followers_count", "statuses_count",
-                   "favourites_count", "created_at", prefix="user")
+    labels = project("labels")
+    time = project("created_at")
+    user = project("friends_count",
+                   "followers_count",
+                   "statuses_count",
+                   "favourites_count",
+                   "created_at",
+                   "verified",
+                   prefix="user")
 
     all = union(text, predict, time, user, labels)
 
@@ -57,8 +62,8 @@ class Queries:
         """
         return {"random_number": {"$gt": lower, "$lt": upper}}
 
-class DataAccess:
 
+class DataAccess:
     X = None
 
     @classmethod
@@ -70,4 +75,3 @@ class DataAccess:
         if cls.X is None:
             cls.X = cls.to_df(db.find(Queries.X, Projections.all))
         return cls.X
-
