@@ -3,7 +3,6 @@ import pandas as pd
 
 from sklearn.base import BaseEstimator, TransformerMixin
 
-
 __author__ = 'JasonLiu'
 
 
@@ -59,5 +58,5 @@ class UserAgeMonths(BaseEstimator, TransformerMixin):
         user_time = pd.to_datetime(X["user.created_at"])
         return (tweet_time - user_time).apply(int) // 2.62974e15
 
-    def fit_transform(self, X, y=None):
+    def fit_transform(self, X, y=None, **kwargs):
         return self.transform(X)

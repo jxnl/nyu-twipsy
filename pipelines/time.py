@@ -31,7 +31,7 @@ class DatetimeIndexAttr(BaseEstimator, TransformerMixin):
             col = getattr(X, self.kind)
         return pd.DataFrame(col)
 
-    def fit_transform(self, X, y=None):
+    def fit_transform(self, X, y=None, **fit_params):
         return self.transform(X)
 
 
@@ -50,5 +50,5 @@ class Timestamp2DatetimeIndex(BaseEstimator, TransformerMixin):
     def transform(self, X, y=None):
         return pd.DatetimeIndex(X)
 
-    def fit_transform(self, X, y=None):
+    def fit_transform(self, X, y=None, **fit_params):
         return self.transform(X)

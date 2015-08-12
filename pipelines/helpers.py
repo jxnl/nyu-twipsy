@@ -27,7 +27,7 @@ class ItemGetter(BaseEstimator, TransformerMixin):
     def transform(self, X, y=None):
         return X[self.key]
 
-    def fit_transform(self, X, y=None):
+    def fit_transform(self, X, y=None, **fit_params):
         return self.transform(X)
 
 
@@ -65,12 +65,9 @@ class ExplodingRecordJoiner(BaseEstimator, TransformerMixin):
             X = X.join(sub)
         return X
 
-    def fit_transform(self, X, y=None):
+    def fit_transform(self, X, y=None, **fit_params):
         return self.transform(X)
 
     def __repr__(self):
         st = [k + "=" + str(v) for k, v in self.cols.items()]
         return "ExplodingRecordJoiner({})".format(", ".join(st))
-
-    def get_params(self):
-        return self.cols
