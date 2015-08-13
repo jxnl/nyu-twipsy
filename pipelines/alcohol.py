@@ -76,7 +76,6 @@ class AlcoholPipeline:
                 ])
             ), self.time_features)
         )
-
         timepipe.append(("features", FeatureUnion(featureunion)))
         return Pipeline(timepipe)
 
@@ -106,7 +105,11 @@ class AlcoholPipeline:
         ]
         return FeatureUnion(features)
 
+<<<<<<< HEAD
     def pipeline(self, clf):
+=======
+    def pipeline(self, clf=None):
+>>>>>>> pipelines
         """
         :param clf: sklearn.classifer
         :return: Pipeline([
@@ -117,6 +120,12 @@ class AlcoholPipeline:
         pipeline = [
             ("exploder", self._exploder),
             ("features", self.features()),
+<<<<<<< HEAD
             ("clf", clf)
         ]
+=======
+        ]
+        if clf:
+            pipeline.append((("clf", clf)))
+>>>>>>> pipelines
         return Pipeline(pipeline)

@@ -59,6 +59,5 @@ class UserAgeMonths(BaseEstimator, TransformerMixin):
         age = ((tweet_time - user_time).apply(int) // 2.62974e15)
         return np.matrix(age.values).T
 
-
     def fit_transform(self, X, y=None, **kwargs):
         return self.transform(X)
