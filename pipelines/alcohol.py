@@ -11,7 +11,7 @@ __author__ = 'JasonLiu'
 
 
 class AlcoholPipeline:
-    def __init__(self, time_features=None, lsi=False):
+    def __init__(self, time_features=None, global_features=None, lsi=False):
         """
         :param time_features: default(["dayofweek", "hour", "hourofweek"])
         :param lsi: if true, includes the TruncatedSVD() piece
@@ -20,6 +20,9 @@ class AlcoholPipeline:
         self.time_features = [
             "dayofweek", "hour", "hourofweek"
         ] if not time_features else time_features
+        self.global_features = {
+            "text", "time", "user", "age"
+        } if not global_features else global_features
 
     @property
     def _exploder(self):
@@ -97,19 +100,18 @@ class AlcoholPipeline:
             ("age", Pipeline(agepipe)),
         ])
         """
-        features = [
-            ("text", self.feature_textpipe()),
-            ("user", self.feature_userpipe()),
-            ("time", self.feature_timepipe()),
-            ("age", self.feature_agepipe()),
+        features = dict(
+            text=self.feature_textpipe(),
+            user=self.feature_userpipe(),
+            time=self.feature_timepipe(),
+            age=self.feature_agepipe()
+        ),
+        features = [(feature, pipe)
+            for feature, pipe in features if feature in self.global_features
         ]
         return FeatureUnion(features)
 
-<<<<<<< HEAD
     def pipeline(self, clf):
-=======
-    def pipeline(self, clf=None):
->>>>>>> pipelines
         """
         :param clf: sklearn.classifer
         :return: Pipeline([
@@ -120,12 +122,6 @@ class AlcoholPipeline:
         pipeline = [
             ("exploder", self._exploder),
             ("features", self.features()),
-<<<<<<< HEAD
             ("clf", clf)
         ]
-=======
-        ]
-        if clf:
-            pipeline.append((("clf", clf)))
->>>>>>> pipelines
         return Pipeline(pipeline)
