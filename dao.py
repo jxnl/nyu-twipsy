@@ -1,8 +1,9 @@
-__author__ = 'JasonLiu'
-
 import pandas as pd
 
 from config import db
+from functools import lru_cache
+
+__author__ = 'JasonLiu'
 
 
 def union(*dtts):
@@ -30,6 +31,7 @@ class Projections:
     predict = project("predict")
     labels = project("labels")
     time = project("created_at")
+    random = project("random_number")
     user = project("friends_count",
                    "followers_count",
                    "statuses_count",
@@ -39,6 +41,7 @@ class Projections:
                    prefix="user")
 
     all = union(text, predict, time, user, labels)
+    mechanical_turk = union(text, predict, random)
 
 
 class Queries:
@@ -47,6 +50,7 @@ class Queries:
     collection from MongoDB.
     """
     X = exists("labels")
+    no_label = exists("labels", e=False)
 
     @classmethod
     def sample(cls, lower=0.0, upper=1.0):
@@ -64,14 +68,22 @@ class Queries:
 
 
 class DataAccess:
-    X = None
 
     @classmethod
     def to_df(cls, cursor):
         return pd.DataFrame(list(cursor)).set_index("_id")
 
+    @lru_cache(1)
     @classmethod
-    def as_dataframe(cls):
-        if cls.X is None:
-            cls.X = cls.to_df(db.find(Queries.X, Projections.all))
-        return cls.X
+    def get_as_dataframe(cls):
+        return cls.to_df(db.find(Queries.X, Projections.all))
+
+    @lru_cache(1)
+    @classmethod
+    def get_not_labeled(cls):
+        return cls.to_df(db.find(Queries.no_label, Projections.mechanical_turk))
+
+    @classmethod
+    def write_labels(cls, series):
+        for _id,label in series.to_dict().items():
+            db.find_one_and_update({"_id":_id}, {"$set": {"labels": label}})
