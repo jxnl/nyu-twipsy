@@ -46,7 +46,7 @@ class AlcoholPipeline:
             ("tfidf", TfidfVectorizer()),
         ]
         if self.lsi:
-            textpipe.append(("lsi", TruncatedSVD()))
+            textpipe.append(("lsi", TruncatedSVD(n_components=4000)))
         return Pipeline(textpipe)
 
     def feature_agepipe(self):
@@ -72,11 +72,10 @@ class AlcoholPipeline:
             lambda datetime_attr: (
                 datetime_attr, Pipeline([
                     ("index", DatetimeIndexAttr(datetime_attr)),
-                    ("onehot", OneHotEncoder())
+                    ("onehot", OneHotEncoder(handle_unknown="ignore"))
                 ])
             ), self.time_features)
         )
-
         timepipe.append(("features", FeatureUnion(featureunion)))
         return Pipeline(timepipe)
 
@@ -106,7 +105,11 @@ class AlcoholPipeline:
         ]
         return FeatureUnion(features)
 
+<<<<<<< HEAD
+    def pipeline(self, clf):
+=======
     def pipeline(self, clf=None):
+>>>>>>> pipelines
         """
         :param clf: sklearn.classifer
         :return: Pipeline([
@@ -117,7 +120,12 @@ class AlcoholPipeline:
         pipeline = [
             ("exploder", self._exploder),
             ("features", self.features()),
+<<<<<<< HEAD
+            ("clf", clf)
+        ]
+=======
         ]
         if clf:
             pipeline.append((("clf", clf)))
+>>>>>>> pipelines
         return Pipeline(pipeline)

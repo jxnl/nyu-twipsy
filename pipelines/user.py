@@ -36,7 +36,7 @@ class UserEgoVectorizer(BaseEstimator, TransformerMixin):
             for feature in self.features[:-1]:
                 U[feature + "_mean"] = U[feature] - np.mean(U[feature])
                 U[feature + "_std"] = (U[feature] - np.mean(U[feature])) ** 2
-        return U
+        return U.astype(float)
 
     def fit_transform(self, X, y=None, **kwargs):
         return self.transform(X)
@@ -56,7 +56,8 @@ class UserAgeMonths(BaseEstimator, TransformerMixin):
     def transform(self, X, y=None):
         tweet_time = pd.to_datetime(X["created_at"])
         user_time = pd.to_datetime(X["user.created_at"])
-        return (tweet_time - user_time).apply(int) // 2.62974e15
+        age = ((tweet_time - user_time).apply(int) // 2.62974e15)
+        return np.matrix(age.values).T
 
     def fit_transform(self, X, y=None, **kwargs):
         return self.transform(X)
