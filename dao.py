@@ -1,7 +1,6 @@
 import pandas as pd
 
 from config import db
-from functools import lru_cache
 
 __author__ = 'JasonLiu'
 
@@ -73,12 +72,10 @@ class DataAccess:
     def to_df(cls, cursor):
         return pd.DataFrame(list(cursor)).set_index("_id")
 
-    @lru_cache(1)
     @classmethod
-    def get_as_dataframe(cls):
-        return cls.to_df(db.find(Queries.X, Projections.all))
+    def get_as_dataframe(cls, find=Queries.X, projection=Projections.all):
+        return cls.to_df(db.find(find, projection))
 
-    @lru_cache(1)
     @classmethod
     def get_not_labeled(cls):
         return cls.to_df(db.find(Queries.no_label, Projections.mechanical_turk))
@@ -87,3 +84,7 @@ class DataAccess:
     def write_labels(cls, series):
         for _id,label in series.to_dict().items():
             db.find_one_and_update({"_id":_id}, {"$set": {"labels": label}})
+
+    @classmethod
+    def count_withlabels(cls):
+        return db.find(exists("labels")).count()
