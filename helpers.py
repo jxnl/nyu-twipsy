@@ -1,4 +1,4 @@
-from re import compile,
+from re import compile
 from functools import lru_cache
 
 __author__ = 'JasonLiu'
@@ -28,8 +28,8 @@ class TurkResults2Label:
         "Alcohol Related::Promotional Content":1
     }
 
-    @lru_cache(20)
     @classmethod
+    @lru_cache(20)
     def parse_to_labels(cls, string_label):
         """
         :param string_label: amazon turk classification result
