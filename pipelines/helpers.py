@@ -30,6 +30,9 @@ class ItemGetter(BaseEstimator, TransformerMixin):
     def fit_transform(self, X, y=None, **fit_params):
         return self.transform(X)
 
+    def get_params(self, deep=True):
+        raise NotImplementedError
+
 
 class ExplodingRecordJoiner(BaseEstimator, TransformerMixin):
     """
