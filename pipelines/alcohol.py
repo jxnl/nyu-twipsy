@@ -14,6 +14,7 @@ class AlcoholPipeline:
     def __init__(self, time_features=None, global_features=None, lsi=False, lsi_n=1000):
         """
         :param time_features: default(["dayofweek", "hour", "hourofweek"])
+        :param global_features: default(["text", "time", "user", "age"])
         :param lsi: if true, includes the TruncatedSVD() piece
         """
         self.lsi = lsi
@@ -98,19 +99,15 @@ class AlcoholPipeline:
             ("age", Pipeline(agepipe)),
         ])
         """
-        #features = dict(
-        #    text=self.feature_textpipe(),
-        #    user=self.feature_userpipe(),
-        #    time=self.feature_timepipe(),
-        #    age=self.feature_agepipe()
-        #)
-        # features = [(feature, pipe) for feature, pipe in features.items() if feature in self.global_features]
 
-        features = [
-            ("text", self.feature_textpipe()),
-            ("user", self.feature_userpipe()),
-            ("time", self.feature_timepipe()),
-            ("age", self.feature_agepipe())]
+        dd = {
+            "text": self.feature_textpipe(),
+            "user": self.feature_userpipe(),
+            "time": self.feature_timepipe(),
+            "age": self.feature_agepipe()
+        }
+
+        features = list(map(lambda feature: (feature, dd[feature]), self.global_features))
         return FeatureUnion(features)
 
     def pipeline(self, clf):
