@@ -2,7 +2,8 @@ from operator import itemgetter
 
 import pandas as pd
 
-from config import db
+from config import db, db2
+from helpers import ready_made_exploder
 
 __author__ = 'JasonLiu'
 
@@ -76,13 +77,18 @@ class Queries:
 
 
 class DataAccess:
+
+    @classmethod
+    def sample_control(cls, lower=0, upper=.01):
+        return cls.to_df(db2.find(find=Queries.sample(lower, upper), projection=Projections.all))
+
     @classmethod
     def to_df(cls, cursor):
         return pd.DataFrame(list(cursor)).set_index("_id")
 
     @classmethod
     def get_as_dataframe(cls, find=Queries.X, projection=Projections.all):
-        return cls.to_df(db.find(find, projection))
+        return ready_made_exploder.fit_transform(cls.to_df(db.find(find, projection)))
 
     @classmethod
     def get_not_labeled(cls):
@@ -106,6 +112,11 @@ class LabelGetter:
     def __init__(self, X):
         self.X = X
 
+    def get_flatlabels(self):
+        labels = self.X["labels"]
+        return self.X, labels.apply(self._flatten)
+
+
     def get_alcohol(self):
         """
         :return: X, y
@@ -124,12 +135,20 @@ class LabelGetter:
         """
         return self._get_labels(self.first_person_level)
 
+    def _flatten(self, label_dict):
+        if self.first_person_level in label_dict:
+            return label_dict[self.first_person_level] + 2
+        else:
+            return label_dict[self.alcohol]
+
     def _get_labels(self, label_name):
         """
         :param label_name:
         :return: X, y with label_name
         """
         labels = self.X["labels"]
+        if label_name == "flat":
+            return self.get_flatlabels()
         has = labels.apply(self._contains(label_name))
         return self.X[has], labels[has].apply(itemgetter(label_name))
 
@@ -140,4 +159,4 @@ class LabelGetter:
         return c
 
     def __repr__(self):
-        return self.X
+        return self.X.__repr__()

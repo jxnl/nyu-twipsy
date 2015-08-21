@@ -7,6 +7,8 @@ from pipelines.helpers import ItemGetter, ExplodingRecordJoiner
 from pipelines.user import UserAgeMonths, UserEgoVectorizer
 from pipelines.time import Timestamp2DatetimeIndex, DatetimeIndexAttr
 
+from tokenize import tokenize
+
 __author__ = 'JasonLiu'
 
 
