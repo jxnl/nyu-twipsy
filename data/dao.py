@@ -3,7 +3,7 @@ from operator import itemgetter
 import pandas as pd
 
 from __private import db, db2
-from data import ready_made_exploder
+from data.helpers import ready_made_exploder
 
 __author__ = 'JasonLiu'
 
