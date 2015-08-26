@@ -2,8 +2,8 @@ from operator import itemgetter
 
 import pandas as pd
 
-from config import db, db2
-from helpers import ready_made_exploder
+from __private import db, db2
+from data import ready_made_exploder
 
 __author__ = 'JasonLiu'
 
@@ -77,6 +77,9 @@ class Queries:
 
 
 class DataAccess:
+    """
+    Provides methods that return DataFrame with the relevant projections of training data stored in MongoDB
+    """
 
     @classmethod
     def sample_control(cls, lower=0, upper=.01):
@@ -87,8 +90,12 @@ class DataAccess:
         return pd.DataFrame(list(cursor)).set_index("_id")
 
     @classmethod
-    def get_as_dataframe(cls, find=Queries.X, projection=Projections.all):
-        return ready_made_exploder.fit_transform(cls.to_df(db.find(find, projection)))
+    def get_as_dataframe(cls, find=Queries.X, projection=Projections.all, explode=True):
+        df = cls.to_df(db.find(find, projection))
+        if explode:
+            return ready_made_exploder.fit_transform(df)
+        else:
+            return df
 
     @classmethod
     def get_not_labeled(cls):
@@ -104,6 +111,8 @@ class DataAccess:
         return db.find(exists("labels")).count()
 
 
+
+
 class LabelGetter:
     alcohol = "alcohol"
     first_person = "first_person"
@@ -115,7 +124,6 @@ class LabelGetter:
     def get_flatlabels(self):
         labels = self.X["labels"]
         return self.X, labels.apply(self._flatten)
-
 
     def get_alcohol(self):
         """
