@@ -6,10 +6,6 @@ from sklearn.cross_validation import train_test_split
 from classification.reporting import ClassificationReporting
 from classification.dao import ClassifierAccess
 
-from data.dao import LabelGetter, DataAccess
-
-
-
 
 class CustomGridSearch:
     def __init__(self, pipeline, param_grid, n_classes, random, **kwargs):
@@ -28,10 +24,19 @@ class CustomGridSearch:
         print("[GRIDSCORES]")
         return self
 
-    def generate_report(self):
-        self.report = ClassificationReporting(
+    def generate_report(self, name=None, level=None, notes=None):
+        self.reporting = ClassificationReporting(
             self.clf.best_estimator_, self.X_train, self.X_test, self.y_train, self.y_test, self.n_classes
-        ).create_report(output=True, show_roc=False)
+        )
+
+        if name:
+            self.reporting.set_name(name)
+        if level:
+            self.reporting.set_level(level)
+        if notes:
+            self.reporting.set_notes(notes)
+
+        self.report = self.reporting.create_report(output=True, show_roc=False)
         self.report["params"] = self.clf.best_params_
         return self
 
