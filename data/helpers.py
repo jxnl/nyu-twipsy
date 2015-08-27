@@ -1,13 +1,6 @@
-from re import compile
-from functools import lru_cache
-
 __author__ = 'JasonLiu'
 
 from pipelines.helpers import ExplodingRecordJoiner
-
-from data.dao import DataAccess, LabelGetter
-
-
 
 ready_made_exploder = ExplodingRecordJoiner(user=[
     'created_at',
@@ -17,16 +10,6 @@ ready_made_exploder = ExplodingRecordJoiner(user=[
     'statuses_count',
     'verified'
 ])
-
-def iterate_heirarchy():
-    """
-    :return: generator (label_name, (X,y), n_classes)
-    """
-    XX = DataAccess.get_as_dataframe()
-    LL = LabelGetter(XX)
-    yield "alcohol", LL.get_alcohol(), 2
-    yield "first_person", LL.get_first_person(), 2
-    yield "first_person_label", LL.get_first_person_label(), 3
 
 
 
