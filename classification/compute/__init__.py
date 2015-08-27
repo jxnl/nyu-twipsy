@@ -6,6 +6,10 @@ from sklearn.cross_validation import train_test_split
 from classification.reporting import ClassificationReporting
 from classification.dao import ClassifierAccess
 
+from data.dao import LabelGetter, DataAccess
+
+
+
 
 class CustomGridSearch:
     def __init__(self, pipeline, param_grid, n_classes, random, **kwargs):
@@ -30,8 +34,6 @@ class CustomGridSearch:
         ).create_report(output=True, show_roc=False)
         self.report["params"] = self.clf.best_params_
         return self
-
-
 
     def write_to_mongo(self):
         ClassifierAccess.write_report(self.report)
