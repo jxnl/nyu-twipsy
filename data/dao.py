@@ -77,10 +77,6 @@ class Queries:
 
 
 class DataAccess:
-    """
-    Provides methods that return DataFrame with the relevant projections of training data stored in MongoDB
-    """
-
     @classmethod
     def sample_control(cls, lower=0, upper=.01):
         return cls.to_df(db2.find(find=Queries.sample(lower, upper), projection=Projections.all))
@@ -109,8 +105,6 @@ class DataAccess:
     @classmethod
     def count_withlabels(cls):
         return db.find(exists("labels")).count()
-
-
 
 
 class LabelGetter:
@@ -144,6 +138,10 @@ class LabelGetter:
         return self._get_labels(self.first_person_level)
 
     def _flatten(self, label_dict):
+        """
+        :param label_dict:
+        :return:
+        """
         if self.first_person_level in label_dict:
             return label_dict[self.first_person_level] + 2
         else:
