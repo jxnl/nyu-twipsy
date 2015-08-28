@@ -1,24 +1,24 @@
 # coding=utf-8
 
-from sklearn.linear_model import LogisticRegression
+from sklearn.svm import LinearSVC
 
 from pipelines.alcohol import AlcoholPipeline
 from data import iterate_heirarchy
 from classification.compute import CustomGridSearch
 
-pipeline = AlcoholPipeline(global_features=["text"]).pipeline(LogisticRegression())
+pipeline = AlcoholPipeline(global_features=["text"]).pipeline((LinearSVC()))
 
 param_grid = {
     'clf__C': 1.0,
     'clf__class_weight': None,
-    'clf__dual': False,
+    'clf__dual': True,
     'clf__fit_intercept': True,
     'clf__intercept_scaling': 1,
-    'clf__max_iter': 100,
+    'clf__loss': 'squared_hinge',
+    'clf__max_iter': 1000,
     'clf__multi_class': 'ovr',
     'clf__penalty': 'l2',
     'clf__random_state': None,
-    'clf__solver': 'liblinear',
     'clf__tol': 0.0001,
     'clf__verbose': 0,
     'features__text__tfidf__analyzer': 'word',
