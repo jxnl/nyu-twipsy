@@ -1,12 +1,12 @@
 __author__ = 'JasonLiu'
 
 from datetime import datetime
-from pickle import dumps
+import pickle
 
 from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, classification_report, roc_curve, auc
 from sklearn.preprocessing import label_binarize
-
 import matplotlib.pyplot as plt
+
 
 class ClassificationReporting:
     metrics = [accuracy_score, f1_score, confusion_matrix, classification_report]
@@ -34,7 +34,7 @@ class ClassificationReporting:
 
     def serialize_classifier(self):
         self.report["type"] = type(self.clf.named_steps["clf"]).__name__
-        self.report["clf"] = dumps(self.clf)
+        self.report["clf"] = pickle.dumps(self.clf)
 
     def set_name(self, name):
         """
@@ -122,9 +122,9 @@ class ClassificationReporting:
         roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
 
         self.report["roc_auc"] = dict(
-            fpr={str(k):v.tolist() for k,v in fpr.items()}, 
-            tpr={str(k):v.tolist() for k,v in tpr.items()},
-            roc_auc={str(k):v.tolist() for k,v in roc_auc.items()}
+            fpr={str(k): v.tolist() for k, v in fpr.items()},
+            tpr={str(k): v.tolist() for k, v in tpr.items()},
+            roc_auc={str(k): v.tolist() for k, v in roc_auc.items()}
         )
 
     def create_report(self, output=False, show_roc=False):
