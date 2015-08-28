@@ -1,26 +1,29 @@
 # coding=utf-8
 
-from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 
+from classification.compute import CustomGridSearch
 from pipelines.alcohol import AlcoholPipeline
 from data import iterate_heirarchy
-from classification.compute import CustomGridSearch
 
-pipeline = AlcoholPipeline(global_features=["text"]).pipeline(LogisticRegression())
+pipeline = AlcoholPipeline(global_features=["text"]).pipeline(RandomForestClassifier())
 
 param_grid = {
-    'clf__C': 1.0,
+    'clf__bootstrap': True,
     'clf__class_weight': None,
-    'clf__dual': False,
-    'clf__fit_intercept': True,
-    'clf__intercept_scaling': 1,
-    'clf__max_iter': 100,
-    'clf__multi_class': 'ovr',
-    'clf__penalty': 'l2',
+    'clf__criterion': 'gini',
+    'clf__max_depth': None,
+    'clf__max_features': 'auto',
+    'clf__max_leaf_nodes': None,
+    'clf__min_samples_leaf': 1,
+    'clf__min_samples_split': 2,
+    'clf__min_weight_fraction_leaf': 0.0,
+    'clf__n_estimators': 10,
+    'clf__n_jobs': 1,
+    'clf__oob_score': False,
     'clf__random_state': None,
-    'clf__solver': 'liblinear',
-    'clf__tol': 0.0001,
     'clf__verbose': 0,
+    'clf__warm_start': False,
     'features__text__tfidf__analyzer': 'word',
     'features__text__tfidf__binary': False,
     'features__text__tfidf__input': 'content',
