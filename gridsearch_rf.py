@@ -6,7 +6,6 @@ from scipy.stats import randint
 from classification.compute import CustomGridSearch
 from pipelines.alcohol import AlcoholPipeline
 from data import iterate_heirarchy
-
 from scripts import text_grid
 
 pipeline = AlcoholPipeline(global_features=["text"]).pipeline(RandomForestClassifier())
@@ -22,7 +21,9 @@ param_grid = {
     'clf__n_estimators': randint(400, 10000),
     'clf__n_jobs': [4],
     'clf__verbose': [0],
-}.update(text_grid)
+}
+
+param_grid.update(text_grid)
 
 cv_kwargs = dict(
     n_iter=30,
@@ -39,7 +40,7 @@ cv_kwargs = dict(
 
 if __name__ == "__main__":
     for level, (X, y), n_classes_ in iterate_heirarchy():
-        gridsearch = CustomGridSearch(pipeline, param_grid, n_classes_, random=True)
+        gridsearch = CustomGridSearch(pipeline, param_grid, n_classes_, random=True, **cv_kwargs)
         gridsearch \
             .set_data(X, y) \
             .fit() \
