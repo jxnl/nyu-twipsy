@@ -32,7 +32,7 @@ cv_kwargs = dict(
     iid=True,
     refit=True,
     cv=None,
-    verbose=0,
+    verbose=3,
     pre_dispatch='2*n_jobs',
     error_score='raise'
 )
