@@ -1,4 +1,5 @@
 from twokenize.twokenize import tokenize
+from scipy.stats import randint
 
 text_grid = {
     'features__text__tfidf__analyzer':
@@ -6,9 +7,9 @@ text_grid = {
     'features__text__tfidf__lowercase':
         [False, True],
     'features__text__tfidf__max_features':
-        list(range(70000, 120000, 5000)),
+        randint(70000, 100000),
     'features__text__tfidf__min_df':
-        [1, 5, 10, 20],
+        randint(1, 20),
     'features__text__tfidf__ngram_range': [
         (1, 1),
         (1, 3),
