@@ -127,48 +127,6 @@ class ClassificationReporting:
             roc_auc={str(k): v.tolist() for k, v in roc_auc.items()}
         )
 
-    def print(self):
-        """
-
-        :return:
-        """
-        print("Training Results")
-        print("~~~~~~~~~~~~~~~~")
-        for k, v in self.report["training_results"].items():
-            print(k, v, "\n", sep="\n")
-        print()
-        print()
-        print("Testing Results Results")
-        print("~~~~~~~~~~~~~~~~~~~~~~~")
-        for k, v in self.report["testing_results"].items():
-            print(k, v, "\n", sep="\n")
-        print()
-        print()
-
-    def show(self):
-        """
-
-        :return:
-        """
-        fpr = self.report["roc_auc"]["fpr"]
-        tpr = self.report["roc_auc"]["tpr"]
-        roc_auc = self.report["roc_auc"]["roc_auc"]
-
-        plt.figure()
-        plt.plot(fpr["micro"], tpr["micro"], label='micro-average ROC curve (area = {0:0.2f})'.format(roc_auc["micro"]))
-
-        for i in range(self.n_classes):
-            i = str(i)
-            plt.plot(fpr[i], tpr[i], label='ROC curve of class {0} (area = {1:0.2f})'.format(i, roc_auc[i]))
-
-        plt.plot([0, 1], [0, 1], 'k--')
-        plt.xlim([0.0, 1.0])
-        plt.ylim([0.0, 1.05])
-        plt.xlabel('False Positive Rate')
-        plt.ylabel('True Positive Rate')
-        plt.title('Receiver operating characteristic for {}'.format(self.report.get("name", "Classifier")))
-        plt.legend(loc="lower right")
-        plt.show()
 
     def create_report(self, output=False, show_roc=False):
         """
@@ -183,9 +141,38 @@ class ClassificationReporting:
         self.serialize_classifier()
 
         if output:
-            self.print()
+            print("Training Results")
+            print("~~~~~~~~~~~~~~~~")
+            for k, v in self.report["training_results"].items():
+                print(k, v, "\n", sep="\n")
+            print()
+            print()
+            print("Testing Results Results")
+            print("~~~~~~~~~~~~~~~~~~~~~~~")
+            for k, v in self.report["testing_results"].items():
+                print(k, v, "\n", sep="\n")
+            print()
+            print()
 
         if show_roc:
-            self.show()
+            fpr = self.report["roc_auc"]["fpr"]
+            tpr = self.report["roc_auc"]["tpr"]
+            roc_auc = self.report["roc_auc"]["roc_auc"]
+
+            plt.figure()
+            plt.plot(fpr["micro"], tpr["micro"], label='micro-average ROC curve (area = {0:0.2f})'.format(roc_auc["micro"]))
+
+            for i in range(self.n_classes):
+                i = str(i)
+                plt.plot(fpr[i], tpr[i], label='ROC curve of class {0} (area = {1:0.2f})'.format(i, roc_auc[i]))
+
+            plt.plot([0, 1], [0, 1], 'k--')
+            plt.xlim([0.0, 1.0])
+            plt.ylim([0.0, 1.05])
+            plt.xlabel('False Positive Rate')
+            plt.ylabel('True Positive Rate')
+            plt.title('Receiver operating characteristic for {}'.format(self.report.get("name", "Classifier")))
+            plt.legend(loc="lower right")
+            plt.show()
 
         return self.report
