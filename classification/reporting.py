@@ -127,26 +127,6 @@ class ClassificationReporting:
             roc_auc={str(k): v.tolist() for k, v in roc_auc.items()}
         )
 
-    def create_report(self, output=False, show_roc=False):
-        """
-
-        :param output:
-        :param show_roc:
-        :return:
-        """
-        self.compute_rocauc()
-        self.compute_metrics("training_results", self.X_train, self.y_train)
-        self.compute_metrics("testing_results", self.X_test, self.y_test)
-        self.serialize_classifier()
-
-        if output:
-            self.print()
-
-        if show_roc:
-            self.show()
-
-        return self.report
-
     def print(self):
         """
 
@@ -189,3 +169,23 @@ class ClassificationReporting:
         plt.title('Receiver operating characteristic for {}'.format(self.report.get("name", "Classifier")))
         plt.legend(loc="lower right")
         plt.show()
+
+    def create_report(self, output=False, show_roc=False):
+        """
+
+        :param output:
+        :param show_roc:
+        :return:
+        """
+        self.compute_rocauc()
+        self.compute_metrics("training_results", self.X_train, self.y_train)
+        self.compute_metrics("testing_results", self.X_test, self.y_test)
+        self.serialize_classifier()
+
+        if output:
+            self.print()
+
+        if show_roc:
+            self.show()
+
+        return self.report
