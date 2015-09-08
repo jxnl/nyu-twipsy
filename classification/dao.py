@@ -1,6 +1,6 @@
 __author__ = 'JasonLiu'
 
-from __private import dbc
+from __private import dbc, fs
 
 import pickle
 
@@ -11,6 +11,21 @@ class ClassifierAccess:
     """
     @classmethod
     def write_report(cls, report):
+        """
+        writes the report to GridFS and Classifiers Collections
+
+        this method will extract the model out and write the pickled
+        model into GridFS and then write the id into the report and
+        write the report into Classifiers
+
+        :param report:
+        :return:
+        """
+        with fs.new_file(
+            filename=report["name"]
+        ) as fp:
+            fp.write(report["clf"])
+            report["clf"] = fp._id
         return dbc.insert_one(report)
 
     @classmethod
