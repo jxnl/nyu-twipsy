@@ -111,23 +111,25 @@ class ClassificationReporting:
         y_test = label_binarize(self.y_test, classes=list(range(self.n_classes)))
 
         # Compute ROC curve and ROC area for each class
-        y_score = self.clf.predict_proba(self.X_test)
-        fpr = dict()
-        tpr = dict()
-        roc_auc = dict()
-        for i in range(self.n_classes):
-            fpr[i], tpr[i], _ = roc_curve(y_test[:, i], y_score[:, i])
-            roc_auc[i] = auc(fpr[i], tpr[i])
+        if hasattr(self.clf, "predict_proba"):
+            y_score = self.clf.predict_proba(self.X_test)
+            fpr = dict()
+            tpr = dict()
+            roc_auc = dict()
+            for i in range(self.n_classes):
+                i -= 1
+                fpr[i], tpr[i], _ = roc_curve(y_test[:, i], y_score[:, i])
+                roc_auc[i] = auc(fpr[i], tpr[i])
 
-        # Compute micro-average ROC curve and ROC area
-        fpr["micro"], tpr["micro"], _ = roc_curve(y_test.ravel(), y_score.ravel())
-        roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
+            # Compute micro-average ROC curve and ROC area
+            fpr["micro"], tpr["micro"], _ = roc_curve(y_test.ravel(), y_score.ravel())
+            roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
 
-        self.report["roc_auc"] = dict(
-            fpr={str(k): v.tolist() for k, v in fpr.items()},
-            tpr={str(k): v.tolist() for k, v in tpr.items()},
-            roc_auc={str(k): v.tolist() for k, v in roc_auc.items()}
-        )
+            self.report["roc_auc"] = dict(
+                fpr={str(k): v.tolist() for k, v in fpr.items()},
+                tpr={str(k): v.tolist() for k, v in tpr.items()},
+                roc_auc={str(k): v.tolist() for k, v in roc_auc.items()}
+            )
 
 
     def create_report(self, output=False, show_roc=False):
@@ -137,7 +139,7 @@ class ClassificationReporting:
         :param show_roc:
         :return:
         """
-        self.compute_rocauc()
+        # self.compute_rocauc()
         self.compute_metrics("training_results", self.X_train, self.y_train)
         self.compute_metrics("testing_results", self.X_test, self.y_test)
         self.serialize_classifier()

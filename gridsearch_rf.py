@@ -17,7 +17,7 @@ param_grid = {
     'clf__class_weight': ['auto', None],
     'clf__criterion': ['gini'],
     'clf__max_depth': randint(10, 1000),
-    'clf__max_features': randint(100, 2000),
+    'clf__max_features': randint(100, 200),
     'clf__min_samples_leaf': randint(1, 10),
     'clf__min_samples_split': randint(1, 10),
     'clf__n_estimators': randint(400, 10000),
@@ -31,13 +31,13 @@ cv_kwargs = dict(
     n_iter=30,
     scoring=None,
     fit_params=None,
-    n_jobs=12,
+    n_jobs=4,
     iid=True,
     refit=True,
     cv=None,
     verbose=3,
     pre_dispatch='2*n_jobs',
-    error_score='raise'
+    error_score=0
 )
 
 if __name__ == "__main__":

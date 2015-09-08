@@ -9,7 +9,7 @@ text_grid = {
     'features__text__tfidf__max_features':
         randint(70000, 100000),
     'features__text__tfidf__min_df':
-        randint(1, 20),
+        randint(1, 5),
     'features__text__tfidf__ngram_range': [
         (1, 1),
         (1, 3),

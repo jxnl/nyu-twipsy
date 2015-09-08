@@ -6,6 +6,8 @@ from sklearn.cross_validation import train_test_split
 from classification.reporting import ClassificationReporting
 from classification.dao import ClassifierAccess
 
+import pickle
+
 
 class CustomGridSearch:
     def __init__(self, pipeline, param_grid, n_classes, random, **kwargs):
@@ -37,6 +39,11 @@ class CustomGridSearch:
             self.reporting.set_notes(notes)
 
         self.report = self.reporting.create_report(output=True, show_roc=False)
+
+        # incase it's a function...
+        self.clf.best_params_["features__text__tfidf__tokenizer"] = \
+        pickle.dumps(self.clf.best_params_["features__text__tfidf__tokenizer"])
+
         self.report["params"] = self.clf.best_params_
         return self
 

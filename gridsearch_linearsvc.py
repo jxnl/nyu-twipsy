@@ -13,10 +13,9 @@ pipeline = AlcoholPipeline(global_features=["text"]).pipeline((LinearSVC()))
 param_grid = {
     'clf__C': uniform(0.01, 1000),
     'clf__class_weight': ["auto", None],
-    'clf__loss': ['squared_hinge'],
     'clf__max_iter': [1000],
     'clf__multi_class': ['ovr'],
-    'clf__penalty': ['l2', "l1"],
+    'clf__penalty': ['l2'],
     'clf__tol': uniform(0.0001, 0.01),
     'clf__verbose': [0],
 }
@@ -27,13 +26,13 @@ cv_kwargs = dict(
     n_iter=30,
     scoring=None,
     fit_params=None,
-    n_jobs=1,
+    n_jobs=4,
     iid=True,
     refit=True,
     cv=None,
     verbose=3,
     pre_dispatch='2*n_jobs',
-    error_score='raise'
+    error_score=0
 )
 
 if __name__ == "__main__":
