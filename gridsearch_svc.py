@@ -25,7 +25,7 @@ param_grid = {
 param_grid.update(text_grid)
 
 cv_kwargs = dict(
-    n_iter=30,
+    n_iter=200,
     scoring=None,
     fit_params=None,
     n_jobs=4,
@@ -43,5 +43,5 @@ if __name__ == "__main__":
         gridsearch \
             .set_data(X, y) \
             .fit() \
-            .generate_report(name="test_batch", level=level, notes="delete") \
+            .generate_report(name="SVC", level=level, notes="delete") \
             .write_to_mongo()

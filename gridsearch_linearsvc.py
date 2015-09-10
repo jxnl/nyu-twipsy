@@ -41,5 +41,5 @@ if __name__ == "__main__":
         gridsearch \
             .set_data(X, y) \
             .fit() \
-            .generate_report(name="test_batch", level=level, notes="delete") \
+            .generate_report(name="LinearSVC", level=level, notes="") \
             .write_to_mongo()
