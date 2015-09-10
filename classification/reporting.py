@@ -132,6 +132,16 @@ class ClassificationReporting:
             )
 
 
+    def generate_pathname(self):
+        name_template = "classifiers/{label}/{clf_type}/accuracy:{accuracy}::f1:{f1_score}"
+        self.report["path"] = name_template.format(
+            clf_type=self.report["name"],
+            label=self.report["level"],
+            accuracy=self.report["accuracy"],
+            f1_score=self.report["f1_score"]
+        )
+
+
     def create_report(self, output=False, show_roc=False):
         """
 
@@ -143,6 +153,7 @@ class ClassificationReporting:
         self.compute_metrics("training_results", self.X_train, self.y_train)
         self.compute_metrics("testing_results", self.X_test, self.y_test)
         self.serialize_classifier()
+        self.generate_pathname()
 
         if output:
             print("Training Results")
