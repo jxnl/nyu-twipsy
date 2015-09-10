@@ -30,14 +30,19 @@ class ClassifierAccess:
         return dbc.insert_one(report)
 
     @classmethod
-    def get_reports(cls, level="alcohol", metric="test.f1_score"):
-        clfs = dbc.find_one(
+    def get_reports(cls, level="alcohol", metric="testing_results.f1_score"):
+        clfs = dbc.find(
             {
                 "level": level
             },
             {
-                "training_results": 1,
-                "testing_results": 1
-            }
-        ).sort(metric, -1)
+                "type": 1,
+                "level": 1,
+                "training_results.accuracy_score": 1,
+                "training_results.f1_score": 1,
+                "training_results.confusion_matrix": 1,
+                "testing_results.accuracy_score": 1,
+                "testing_results.f1_score": 1,
+                "testing_results.confusion_matrix": 1,
+            }).sort(metric, -1)
         return list(clfs)
