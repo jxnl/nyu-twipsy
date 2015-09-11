@@ -1,6 +1,6 @@
 __author__ = 'JasonLiu'
 
-from __private import dbc
+from __private import dbc, fs
 
 import pickle
 
@@ -11,11 +11,38 @@ class ClassifierAccess:
     """
     @classmethod
     def write_report(cls, report):
+        """
+        writes the report to GridFS and Classifiers Collections
+
+        this method will extract the model out and write the pickled
+        model into GridFS and then write the id into the report and
+        write the report into Classifiers
+
+        :param report:
+        :return:
+        """
+        with fs.new_file(
+            filename=report["path"],
+            content_type='text/plain'
+        ) as fp:
+            fp.write(report["clf"])
+            report["clf"] = fp._id
         return dbc.insert_one(report)
 
     @classmethod
-    def get_best_clf(cls, level="alcohol", metric="test.f1_score"):
-        clfs = dbc.find_one({"level": level}, {"clf": 1, "training_results": 1, "testing_results": 1}) \
-            .sort(metric, -1).limit(1)
-        report = list(clfs)[0]
-        report["clf"] = pickle.loads(report["clf"])
+    def get_reports(cls, level="alcohol", metric="testing_results.f1_score"):
+        clfs = dbc.find(
+            {
+                "level": level
+            },
+            {
+                "type": 1,
+                "level": 1,
+                "training_results.accuracy_score": 1,
+                "training_results.f1_score": 1,
+                "training_results.confusion_matrix": 1,
+                "testing_results.accuracy_score": 1,
+                "testing_results.f1_score": 1,
+                "testing_results.confusion_matrix": 1,
+            }).sort(metric, -1)
+        return list(clfs)
