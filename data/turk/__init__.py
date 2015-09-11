@@ -2,6 +2,8 @@ __author__ = 'JasonLiu'
 
 from functools import lru_cache
 
+import re
+
 class TurkResults2Label:
     """
     TurkResults2Label
@@ -11,8 +13,8 @@ class TurkResults2Label:
         TurkResults2Label.parse_to_labels(string_labe: str)
     """
 
-    first = compile("First")
-    alch = compile("Alcohol Consumption")
+    first = re.compile("First")
+    alch = re.compile("Alcohol Consumption")
 
     drinking_level = {
         "First Person - Alcohol": 0,
