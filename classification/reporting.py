@@ -102,6 +102,16 @@ class ClassificationReporting:
             results[metric.__name__] = result.tolist() if hasattr(result, "tolist") else result
         self.report[prefix] = results
 
+    def set_path(self):
+        name_template = "{level}|accuracy:{accuracy}|f1:{f1_score}|type:{type}"
+        self.report["path"] = name_template.format(
+            level=self.report["level"],
+            accuracy=self.report["testing_results"]["accuracy_score"],
+            f1_score=self.report["testing_results"]["f1_score"],
+            type=self.report['type']
+        )
+        return self
+
     def compute_rocauc(self):
         """
 
@@ -139,10 +149,14 @@ class ClassificationReporting:
         :param show_roc:
         :return:
         """
-        # self.compute_rocauc()
+        try:
+            self.compute_rocauc()
+        except:
+            pass
         self.compute_metrics("training_results", self.X_train, self.y_train)
         self.compute_metrics("testing_results", self.X_test, self.y_test)
         self.serialize_classifier()
+        self.set_path()
 
         if output:
             print("Training Results")
