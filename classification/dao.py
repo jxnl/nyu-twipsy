@@ -38,11 +38,10 @@ class ClassifierAccess:
             {
                 "type": 1,
                 "level": 1,
+                "clf":1,
                 "training_results.accuracy_score": 1,
                 "training_results.f1_score": 1,
-                "training_results.confusion_matrix": 1,
                 "testing_results.accuracy_score": 1,
                 "testing_results.f1_score": 1,
-                "testing_results.confusion_matrix": 1,
             }).sort(metric, -1)
         return list(clfs)

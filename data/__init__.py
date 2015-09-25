@@ -9,6 +9,6 @@ def iterate_heirarchy():
     """
     XX = DataAccess.get_as_dataframe()
     LL = LabelGetter(XX)
-    yield "alcohol", LL.get_alcohol(), 2
+    # yield "alcohol", LL.get_alcohol(), 2
     yield "first_person", LL.get_first_person(), 2
     yield "first_person_label", LL.get_first_person_label(), 3
