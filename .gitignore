@@ -56,3 +56,6 @@ docs/_build/
 # PyBuilder
 target/
 __private.py
+control.dump.csv
+nohup.out
+Untitled.ipynb
