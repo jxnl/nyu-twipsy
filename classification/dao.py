@@ -45,3 +45,7 @@ class ClassifierAccess:
                 "testing_results.f1_score": 1,
             }).sort(metric, -1)
         return list(clfs)
+
+    @classmethod
+    def get_byfile(cls, filename):
+        return pickle.loads(fs.find_one({"filename": filename}).read())
