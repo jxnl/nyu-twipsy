@@ -1,3 +1,3 @@
-[submodule "scikit-gensim-mixin"]
-	path = scikit-gensim-mixin
-	url = https://github.com/jxnl/scikit-gensim-mixin.git
+[submodule "sklda"]
+	path = sklda
+	url = https://github.com/jxnl/sklda.git
