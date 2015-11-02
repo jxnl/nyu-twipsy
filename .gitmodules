@@ -1,0 +1,3 @@
+[submodule "sklda"]
+	path = sklda
+	url = https://github.com/jxnl/sklda.git
