@@ -8,7 +8,7 @@ from data import iterate_heirarchy
 from classification.compute import CustomGridSearch
 from gridsearch import text_grid
 
-pipeline = AlcoholPipeline(global_features=["text"]).pipeline(LogisticRegression())
+pipeline = AlcoholPipeline(global_features=["text", "topic"]).pipeline(LogisticRegression())
 
 param_grid = {
     'clf__C': uniform(0.01, 1000),
@@ -41,5 +41,5 @@ if __name__ == "__main__":
         gridsearch = CustomGridSearch(pipeline, param_grid, n_classes_, random=True, **cv_kwargs)
         gridsearch.set_data(X, y)\
             .fit()\
-            .generate_report(name="test_batch", level=level, notes="delete")\
+            .generate_report(name="LogisticRegression_LDA", level=level, notes="")\
             .write_to_mongo()

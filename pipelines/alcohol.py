@@ -6,6 +6,7 @@ from sklearn.preprocessing import OneHotEncoder
 from pipelines.helpers import ItemGetter, ExplodingRecordJoiner
 from pipelines.user import UserAgeMonths, UserEgoVectorizer
 from pipelines.time import Timestamp2DatetimeIndex, DatetimeIndexAttr
+from pipelines.text import Gensim
 
 __author__ = 'JasonLiu'
 
@@ -41,7 +42,7 @@ class AlcoholPipeline:
 
     def feature_textpipe(self):
         """
-        :return: Pipeline(ItemGetter -> TfidfVectorizer -> TruncatedSVD)
+        :return: Pipeline(ItemGetter -> TfidfVectorizer)
         """
         textpipe = [
             ("getter", ItemGetter("text")),
@@ -49,6 +50,16 @@ class AlcoholPipeline:
         ]
         if self.lsi:
             textpipe.append(("lsi", TruncatedSVD(n_components=self.lsi_n)))
+        return Pipeline(textpipe)
+
+    def feature_topicpipe(self):
+        """
+        :return: Pipeline(ItemGetter -> LDA)
+        """
+        textpipe = [
+            ("getter", ItemGetter("text")),
+            ("topics", Gensim()),
+        ]
         return Pipeline(textpipe)
 
     def feature_agepipe(self):
@@ -102,6 +113,7 @@ class AlcoholPipeline:
 
         dd = {
             "text": self.feature_textpipe(),
+            "topic": self.feature_topicpipe(),
             "user": self.feature_userpipe(),
             "time": self.feature_timepipe(),
             "age": self.feature_agepipe()

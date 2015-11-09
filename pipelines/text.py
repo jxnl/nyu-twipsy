@@ -1,44 +1,31 @@
 from sklearn.base import BaseEstimator, TransformerMixin
-from gensim.models import Phrases
+from scipy import sparse
+
+from __private import p2, p3, tokenizer, lda100, d1
 
 __author__ = 'JasonLiu'
 
 
-class Tokenizer(BaseEstimator, TransformerMixin):
-    """
-    Tokenizer
-    ~~~~~~~~~
-
-    Usage:
-        Initialize with a tokenizer and it will apply the tokenizer to every
-        element in the series
-    """
-
-    def __init__(self, tokenizer):
-        self.tokenizer = tokenizer
-
-    def fit(self):
-        pass
-
-    def fit_transform(self, X, y=None, **fit_params):
-        return X.apply(self.tokenizer)
-
-
-class GensimPhrases(BaseEstimator, TransformerMixin):
+class Gensim(BaseEstimator, TransformerMixin):
     """
     GensimPhrases
     ~~~~~~~~~~~~~
-
-    Usage:
-        Initialize with the path to a phrase object
     """
-
-    def __init__(self, phrasepath):
-        self.phrase = Phrases.load(phrasepath)
 
     def fit(self):
         pass
 
-    def fit_transform(self, X, y=None, **fit_params):
-        return [phrases for phrases in self.phrase[X]]
+    def convert2sparse(self, tokens):
+        row, col, data = [], [], []
+        for doc_id, document in enumerate(lda100[tokens]):
+            for topic_id, weight in document:
+                row.append(doc_id)
+                col.append(topic_id)
+                data.append(weight)
+        return sparse.csr_matrix((data, (row, col)))
 
+    def fit_transform(self, X, y=None, **fit_params):
+        tokens = (
+            d1.doc2bow(doc) for doc in p3[p2[X.str.lower().apply(tokenizer.tokenize)]]
+        )
+        return self.convert2sparse(tokens)
