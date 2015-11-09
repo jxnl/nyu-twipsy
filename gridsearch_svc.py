@@ -8,7 +8,7 @@ from pipelines.alcohol import AlcoholPipeline
 from data import iterate_heirarchy
 from gridsearch import text_grid
 
-pipeline = AlcoholPipeline(global_features=["text"]).pipeline(SVC())
+pipeline = AlcoholPipeline(global_features=["text", "topic"]).pipeline(SVC())
 
 param_grid = {
     'clf__C': uniform(10 ** -4, 10 ** 4),

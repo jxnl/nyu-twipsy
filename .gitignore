@@ -60,4 +60,17 @@ __private.py
 exploring-amt-data.ipynb
 control.dump.csv
 Untitled.ipynb
+<<<<<<< HEAD
 nohup.out
+=======
+training-gensim.ipynb
+training-gensim.py
+twitter_both_corpus.mm
+twitter_d1.Dict
+twitter_p2.Phrase
+twitter_p3.Phrase
+twitter_topics100.Lda
+twitter_topics100.Lda.expElogbeta.npy
+twitter_topics100.Lda.state
+twitter_topics100.Lda.state.sstats.npy
+>>>>>>> master

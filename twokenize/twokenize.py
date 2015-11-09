@@ -12,8 +12,6 @@ __author__ = "brendan o'connor (anyall.org)"
 import re
 import sys
 
-import twokenize.emoticons as emoticons
-
 mycompile = lambda pat: re.compile(pat, re.UNICODE)
 
 
@@ -84,7 +82,6 @@ Decorations = r' [  ♫   ]+ '.replace(' ', '')
 EmbeddedApostrophe = r"\S+'\S+"
 
 ProtectThese = [
-    emoticons.Emoticon,
     Url,
     Entity,
     Timelike,

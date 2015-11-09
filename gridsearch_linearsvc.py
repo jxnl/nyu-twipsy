@@ -8,7 +8,7 @@ from data import iterate_heirarchy
 from classification.compute import CustomGridSearch
 from gridsearch import text_grid
 
-pipeline = AlcoholPipeline(global_features=["text"]).pipeline((LinearSVC()))
+pipeline = AlcoholPipeline(global_features=["text", "topic"]).pipeline((LinearSVC()))
 
 param_grid = {
     'clf__C': uniform(0.01, 1000),
