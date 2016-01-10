@@ -8,13 +8,12 @@ from pipelines.alcohol import AlcoholPipeline
 from data import iterate_heirarchy
 from gridsearch import text_grid
 
-pipeline = AlcoholPipeline(global_features=["text"]).pipeline(
+pipeline = AlcoholPipeline(global_features=["text", "topic"]).pipeline(
     RandomForestClassifier()
 )
 
 param_grid = {
     'clf__bootstrap': [True, False],
-    'clf__class_weight': ['auto', None],
     'clf__criterion': ['gini'],
     'clf__max_depth': randint(10, 1000),
     'clf__max_features': randint(100, 200),
@@ -28,7 +27,7 @@ param_grid = {
 param_grid.update(text_grid)
 
 cv_kwargs = dict(
-    n_iter=30,
+    n_iter=50,
     scoring=None,
     fit_params=None,
     n_jobs=4,
@@ -47,5 +46,5 @@ if __name__ == "__main__":
         gridsearch \
             .set_data(X, y) \
             .fit() \
-            .generate_report(name="RF", level=level, notes="") \
+            .generate_report(name="RF_LDA", level=level, notes="added 1300, nov17") \
             .write_to_mongo()

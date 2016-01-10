@@ -38,6 +38,8 @@ class ClassifierAccess:
             {
                 "type": 1,
                 "level": 1,
+                "name": 1,
+                "notes": 1,
                 "clf":1,
                 "training_results.accuracy_score": 1,
                 "training_results.f1_score": 1,

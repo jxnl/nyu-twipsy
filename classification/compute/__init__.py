@@ -16,7 +16,7 @@ class CustomGridSearch:
 
     def set_data(self, X, y):
         self.X_train, self.X_test, self.y_train, self.y_test = \
-            train_test_split(X, y, test_size=0.33, random_state=42)
+            train_test_split(X, y, test_size=0.15, random_state=42)
         return self
 
     def fit(self):

@@ -33,6 +33,7 @@ class Projections:
     predict = project("predict")
     labels = project("labels")
     time = project("created_at")
+    control = project("control")
     random = project("random_number")
     user = project(
         "friends_count",
@@ -45,7 +46,7 @@ class Projections:
     )
 
     all = union(text, predict, time, user, labels)
-    mechanical_turk = union(text, predict, random)
+    mechanical_turk = union(text, predict, random, control)
 
 
 class Queries:
@@ -135,7 +136,9 @@ class LabelGetter:
         """
         :return: X, y
         """
-        return self._get_labels(self.first_person_level)
+        X, y = self._get_labels(self.first_person_level)
+        y[y == 3] = 0 # Fixed the problem of heavy labels
+        return X, y
 
     def _flatten(self, label_dict):
         """

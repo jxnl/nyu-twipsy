@@ -13,7 +13,6 @@ pipeline = AlcoholPipeline(global_features=["text", "topic"]).pipeline(SVC())
 param_grid = {
     'clf__C': uniform(10 ** -4, 10 ** 4),
     'clf__cache_size': [500],
-    'clf__class_weight': ['auto', None],
     'clf__coef0': uniform(0, 1),
     'clf__degree': [1, 2, 3],
     'clf__gamma': ['auto'],
@@ -25,7 +24,7 @@ param_grid = {
 param_grid.update(text_grid)
 
 cv_kwargs = dict(
-    n_iter=200,
+    n_iter=50,
     scoring=None,
     fit_params=None,
     n_jobs=4,
@@ -43,5 +42,5 @@ if __name__ == "__main__":
         gridsearch \
             .set_data(X, y) \
             .fit() \
-            .generate_report(name="SVC", level=level, notes="delete") \
+            .generate_report(name="SVC_TOPIC", level=level, notes="nov-17, added 1300 more examples") \
             .write_to_mongo()

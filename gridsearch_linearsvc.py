@@ -12,7 +12,7 @@ pipeline = AlcoholPipeline(global_features=["text", "topic"]).pipeline((LinearSV
 
 param_grid = {
     'clf__C': uniform(0.01, 1000),
-    'clf__class_weight': ["auto", None],
+    'clf__class_weight': [None],
     'clf__max_iter': [1000],
     'clf__multi_class': ['ovr'],
     'clf__penalty': ['l2'],
