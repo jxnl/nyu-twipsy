@@ -74,3 +74,17 @@ twitter_topics100.Lda.expElogbeta.npy
 twitter_topics100.Lda.state
 twitter_topics100.Lda.state.sstats.npy
 >>>>>>> master
+bulk_control.csv
+frequency
+gnip.labeled.dump.csv
+id2firstname.csv
+id2gender.csv
+id2names.csv
+label.control.csv
+labeled.control.dump.csv
+log
+plt_levels_weekday.png
+time_hour_gender.csv
+time_weekday_gender.csv
+time_weekdayhour_gender.csv
+academic_data/alcohol_dependence.csv
