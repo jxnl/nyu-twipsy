@@ -88,3 +88,7 @@ time_hour_gender.csv
 time_weekday_gender.csv
 time_weekdayhour_gender.csv
 academic_data/alcohol_dependence.csv
+.idea
+.ipynb_checkpoints
+.ropeproject
+state_gensim
