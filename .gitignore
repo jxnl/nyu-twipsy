@@ -91,4 +91,8 @@ academic_data/alcohol_dependence.csv
 .idea
 .ipynb_checkpoints
 .ropeproject
+<<<<<<< HEAD
 state_gensim
+=======
+twitter_labels.csv
+>>>>>>> notebooks

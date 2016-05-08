@@ -40,5 +40,8 @@ if __name__ == "__main__":
         gridsearch = CustomGridSearch(pipeline, param_grid, n_classes_, random=True, **cv_kwargs)
         gridsearch.set_data(X, y)\
             .fit()\
-            .generate_report(name="LogisticRegression_LDA_NORM", level=level, notes="added 1300 + topics")\
+            .generate_report(
+                name="LogisticRegression_LDA_NORM",
+                level=level,
+                notes="added 1300 + topics")\
             .write_to_mongo()
