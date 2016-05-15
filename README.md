@@ -5,6 +5,30 @@
 
 ## Error Analysis
 
+    from sklearn.pipeline import Pipeline
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.linear_model import LogisticRegression
+
+    from pipelines.helpers import ItemGetter
+
+    clf = Pipeline([
+        ("getter", ItemGetter("text")),
+        ("tfidf", TfidfVectorizer()),
+        ("clf", LogisticRegression())])
+
+    clf_params = {
+        'clf__C': 200,
+        'clf__dual': False,
+        'clf__max_iter': 100,
+        'clf__multi_class': 'ovr',
+        'clf__penalty': 'l2',
+        'tfidf__tokenizer':tokenizer.tokenize,
+        'tfidf__ngram_range':(1, 3),
+        'tfidf__max_features':200000
+    }
+
+    clf.set_params(**clf_params)
+
 
 ### Alchohol
 
